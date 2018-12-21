@@ -22,7 +22,7 @@ public class TrajectoryFollower extends Loop {
     private ReflectingCSVWriter<SetpointInfo> mVelWriter = new ReflectingCSVWriter<>("/home/lvuser/VEL.csv", SetpointInfo.class);
     private ReflectingCSVWriter<SetpointInfo> mAccelWriter = new ReflectingCSVWriter<>("/home/lvuser/ACCEL.csv", SetpointInfo.class);
 
-    private DriveController mDriveController = new DriveController(new MikeyProfile(), SystemSettings.CONTROL_LOOP_PERIOD);
+    private DriveController mDriveController = new DriveController(new MikeyProfile(), SystemSettings.kControlLoopPeriod);
     private DriveOutput mCurrentDriveOutput = new DriveOutput();
 
     private final Drive mDrive;

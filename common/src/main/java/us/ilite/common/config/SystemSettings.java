@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 public class SystemSettings extends ConstantsBase {
 
 
-    public static double CONTROL_LOOP_PERIOD = 0.015; // seconds
+    public static double kControlLoopPeriod = 0.015; // seconds
     public static TimeUnit SYSTEM_TIME_UNIT = TimeUnit.SECONDS;
 
     public static double NETWORK_TABLE_UPDATE_RATE = 0.01;
