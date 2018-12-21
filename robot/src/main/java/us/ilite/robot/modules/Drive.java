@@ -32,7 +32,7 @@ public class Drive extends Loop {
 
 	private Data mData;
 
-	private IDriveHardware mDriveHardware;
+	private DriveHardware mDriveHardware;
 
 	private EDriveState mDriveState;
 	private DriveMessage mDriveMessage;
@@ -51,8 +51,8 @@ public class Drive extends Loop {
 		this.mClock = pClock;
 		this.mDriveHardware = new DriveHardware();
 
-		mDebugLogger = new ReflectingCSVWriter<>("debug.csv", DebugOutput.class);
-		mMotionPlanLogger = new ReflectingCSVWriter<>("motion_plan.csv", DriveMotionPlanner.class);
+		mDebugLogger = new ReflectingCSVWriter<>("/home/lvuser/debug.csv", DebugOutput.class);
+		mMotionPlanLogger = new ReflectingCSVWriter<>("/home/lvuser/motion_plan.csv", DriveMotionPlanner.class);
 		debugOutput = new DebugOutput();
 	}
 
@@ -205,7 +205,7 @@ public class Drive extends Loop {
     }
 
     public Drive simulated() {
-		this.mDriveHardware = new SimDriveHardware(mDriveController, mClock);
+//		this.mDriveHardware = new SimDriveHardware(mDriveController, mClock);
 		return this;
 	}
 
