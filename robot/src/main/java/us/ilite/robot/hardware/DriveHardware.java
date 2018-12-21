@@ -26,7 +26,7 @@ public class DriveHardware implements IDriveHardware {
 
     private final PigeonIMU mGyro;
 
-    private final TalonSRX mLeftMaster, mRightMaster, mLeftMiddle, mRightMiddle, mLeftRear, mRightRear;
+    private final TalonSRX mLeftMaster, mRightMaster, mLeftRear, mRightRear;
     private ControlMode mLeftControlMode, mRightControlMode;
     private NeutralMode mLeftNeutralMode, mRightNeutralMode;
 
@@ -34,22 +34,18 @@ public class DriveHardware implements IDriveHardware {
         mGyro = new PigeonIMU(SystemSettings.kPigeonId);
 
         mLeftMaster = TalonSRXFactory.createDefaultTalon(SystemSettings.kDriveLeftMasterTalonId);
-        mLeftMiddle = TalonSRXFactory.createPermanentSlaveTalon(SystemSettings.kDriveLeftMiddleTalonId, SystemSettings.kDriveLeftMasterTalonId);
         mLeftRear = TalonSRXFactory.createPermanentSlaveTalon(SystemSettings.kDriveLeftRearTalonId, SystemSettings.kDriveLeftMasterTalonId);
 
         mRightMaster = TalonSRXFactory.createDefaultTalon(SystemSettings.kDriveRightMasterTalonId);
-        mRightMiddle = TalonSRXFactory.createPermanentSlaveTalon(SystemSettings.kDriveRightMiddleTalonId, SystemSettings.kDriveRightMasterTalonId);
         mRightRear = TalonSRXFactory.createPermanentSlaveTalon(SystemSettings.kDriveRightRearTalonId, SystemSettings.kDriveRightMasterTalonId);
 
         configureMaster(mLeftMaster, true);
         configureMaster(mRightMaster, false);
 
         mLeftMaster.setInverted(false);
-        mLeftMiddle.setInverted(false);
         mLeftRear.setInverted(false);
 
         mRightMaster.setInverted(true);
-        mRightMiddle.setInverted(true);
         mRightRear.setInverted(true);
 
         configTalonForVelocity(mRightMaster);
