@@ -1,18 +1,18 @@
 package us.ilite.robot;
 
-import java.util.Scanner;
-
 import com.flybotix.hfr.util.log.ELevel;
 import com.flybotix.hfr.util.log.ILog;
 import com.flybotix.hfr.util.log.Logger;
 
+import control.DriveController;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import us.ilite.common.config.SystemSettings;
 import us.ilite.lib.drivers.Clock;
 import us.ilite.robot.commands.CommandQueue;
+import us.ilite.robot.driverinput.DriverInput;
 import us.ilite.robot.loops.LoopManager;
-import us.ilite.robot.modules.ExampleModule;
+import us.ilite.robot.modules.Drive;
 import us.ilite.robot.modules.ModuleList;
 
 public class Robot extends IterativeRobot {
@@ -21,15 +21,17 @@ public class Robot extends IterativeRobot {
 
     private CommandQueue mCommandQueue = new CommandQueue();
 
-    // Module declarations here
-    private ExampleModule mExampleModule = new ExampleModule();
-
     // It sure would be convenient if we could reduce this to just a LoopManager...Will have to test timing of Codex first
-    private LoopManager mLoopManager = new LoopManager(SystemSettings.CONTROL_LOOP_PERIOD);
+    private LoopManager mLoopManager = new LoopManager(SystemSettings.kControlLoopPeriod);
     private ModuleList mRunningModules = new ModuleList();
 
     private Clock mClock = new Clock();
-    private Data mData = new Data().simulated();
+    private Data mData = new Data();
+
+    // Module declarations here
+    private DriveController mDriveController = new DriveController(new MikeyProfile(), SystemSettings.kControlLoopPeriod);
+    private Drive mDrive = new Drive(mData, mDriveController, mClock);
+    private DriverInput mDriverInput = new DriverInput(mDrive, mData);
 
     @Override
     public void robotInit() {
@@ -50,7 +52,7 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void robotPeriodic() {
-        mLogger.info(this.toString());
+//        mLogger.info(this.toString());
 
         mClock.cycleEnded();
     }
@@ -59,7 +61,7 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         mapNonModuleInputs();
 
-        mRunningModules.setModules(mExampleModule);
+        mRunningModules.setModules();
         mRunningModules.modeInit(mClock.getCurrentTime());
 
         mLoopManager.start();
@@ -78,10 +80,10 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         mapNonModuleInputs();
 
-        mRunningModules.setModules(mExampleModule);
+        mRunningModules.setModules(mDriverInput, mDrive);
         mRunningModules.modeInit(mClock.getCurrentTime());
 
-        mLoopManager.start();
+//        mLoopManager.start();
     }
 
     @Override
@@ -95,7 +97,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void disabledInit() {
         mRunningModules.shutdown(mClock.getCurrentTime());
-        mLoopManager.stop();
+//        mLoopManager.stop();
     }
 
     @Override
@@ -105,7 +107,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void testInit() {
-        mRunningModules.setModules(mExampleModule);
+        mRunningModules.setModules();
         mRunningModules.modeInit(mClock.getCurrentTime());
 
         mLoopManager.start();
