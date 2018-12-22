@@ -8,7 +8,9 @@ import control.DriveController;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import us.ilite.common.config.SystemSettings;
+import us.ilite.common.types.drive.EDriveData;
 import us.ilite.lib.drivers.Clock;
+import us.ilite.lib.util.SimpleNetworkTable;
 import us.ilite.robot.commands.CommandQueue;
 import us.ilite.robot.driverinput.DriverInput;
 import us.ilite.robot.loops.LoopManager;
@@ -63,6 +65,7 @@ public class Robot extends IterativeRobot {
 
         mRunningModules.setModules();
         mRunningModules.modeInit(mClock.getCurrentTime());
+        mRunningModules.periodicInput(mClock.getCurrentTime());
 
         mLoopManager.start();
     }
@@ -80,10 +83,12 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
         mapNonModuleInputs();
 
-        mRunningModules.setModules(mDriverInput, mDrive);
+        mRunningModules.setModules(mDriverInput);
         mRunningModules.modeInit(mClock.getCurrentTime());
+        mRunningModules.periodicInput(mClock.getCurrentTime());
 
-//        mLoopManager.start();
+        mLoopManager.setRunningLoops(mDrive);
+        mLoopManager.start();
     }
 
     @Override
@@ -97,7 +102,7 @@ public class Robot extends IterativeRobot {
     @Override
     public void disabledInit() {
         mRunningModules.shutdown(mClock.getCurrentTime());
-//        mLoopManager.stop();
+        mLoopManager.stop();
     }
 
     @Override
@@ -109,6 +114,7 @@ public class Robot extends IterativeRobot {
     public void testInit() {
         mRunningModules.setModules();
         mRunningModules.modeInit(mClock.getCurrentTime());
+        mRunningModules.periodicInput(mClock.getCurrentTime());
 
         mLoopManager.start();
     }
