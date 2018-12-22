@@ -46,7 +46,7 @@ public class DriverInput extends Module {
     public void modeInit(double pNow) {
 // TODO Auto-generated method stub
 
-        canRunCommandQueue = lastCanRunCommandQueue == false;
+        canRunCommandQueue = lastCanRunCommandQueue = false;
 
     }
 
