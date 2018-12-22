@@ -7,6 +7,7 @@ import com.flybotix.hfr.util.log.Logger;
 import control.DriveController;
 import control.DriveMotionPlanner;
 import control.DriveOutput;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import us.ilite.common.config.SystemSettings;
 import us.ilite.common.lib.geometry.Pose2d;
 import us.ilite.common.lib.geometry.Pose2dWithCurvature;
@@ -17,6 +18,7 @@ import us.ilite.common.lib.util.ReflectingCSVWriter;
 import us.ilite.common.types.drive.EDriveData;
 import us.ilite.common.types.sensor.EGyro;
 import us.ilite.lib.drivers.Clock;
+import us.ilite.lib.util.SimpleNetworkTable;
 import us.ilite.robot.Data;
 import us.ilite.robot.hardware.DriveHardware;
 import us.ilite.robot.hardware.IDriveHardware;
@@ -67,7 +69,7 @@ public class Drive extends Loop {
 		mData.drive.set(EDriveData.LEFT_POS_INCHES, mDriveHardware.getLeftInches());
 		mData.drive.set(EDriveData.RIGHT_POS_INCHES, mDriveHardware.getRightInches());
 		mData.drive.set(EDriveData.LEFT_VEL_IPS, mDriveHardware.getLeftVelInches());
-		mData.drive.set(EDriveData.RIGHT_VEL_IPS, mDriveHardware.getRightInches());
+		mData.drive.set(EDriveData.RIGHT_VEL_IPS, mDriveHardware.getRightVelInches());
 		mData.drive.set(EDriveData.LEFT_CURRENT, mDriveHardware.getLeftCurrent());
 		mData.drive.set(EDriveData.RIGHT_CURRENT, mDriveHardware.getRightCurrent());
 		mData.drive.set(EDriveData.LEFT_VOLTAGE, mDriveHardware.getLeftVoltage());
@@ -89,7 +91,8 @@ public class Drive extends Loop {
 
 	@Override
 	public void update(double pNow) {
-		if(mDriveState != EDriveState.NORMAL) {
+        SimpleNetworkTable.writeCodexToSmartDashboard(EDriveData.class, mData.drive, mClock.getCurrentTime());
+        if(mDriveState != EDriveState.NORMAL) {
 			mLogger.error("Invalid drive state - maybe you meant to run this a high frequency?");
 		} else {
 			mDriveHardware.set(mDriveMessage);
@@ -105,6 +108,7 @@ public class Drive extends Loop {
 
 	@Override
 	public void loop(double pNow) {
+		SimpleNetworkTable.writeCodexToSmartDashboard(EDriveData.class, mData.drive, mClock.getCurrentTime());
 		switch(mDriveState) {
 			case PATH_FOLLOWING:
 				if(mDriveController.isDone()) {
