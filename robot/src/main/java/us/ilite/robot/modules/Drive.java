@@ -2,6 +2,7 @@ package us.ilite.robot.modules;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.flybotix.hfr.util.log.ILog;
 import com.flybotix.hfr.util.log.Logger;
 import control.DriveController;
@@ -120,7 +121,11 @@ public class Drive extends Loop {
 							mData.drive.get(EDriveData.LEFT_POS_INCHES),
 							mData.drive.get(EDriveData.RIGHT_POS_INCHES),
 							Rotation2d.fromDegrees(mData.imu.get(EGyro.YAW_DEGREES)));
-					DriveMessage driveMessage = new DriveMessage(Conversions.radiansPerSecondToTicksPer100ms(output.left_velocity), Conversions.radiansPerSecondToTicksPer100ms(output.right_velocity), ControlMode.Velocity);
+
+					DriveMessage driveMessage = new DriveMessage(
+							Conversions.radiansPerSecondToTicksPer100ms(output.left_velocity),
+							Conversions.radiansPerSecondToTicksPer100ms(output.right_velocity),
+							ControlMode.Velocity);
 
 					double leftFeedForward = output.left_feedforward_voltage / 12.0;
 					double rightFeedforward = output.right_feedforward_voltage / 12.0;
@@ -132,6 +137,7 @@ public class Drive extends Loop {
 					double rightDemand = rightFeedforward + SystemSettings.kDriveVelocity_kD * rightAccel / 1023.0;
 
 					driveMessage.setDemand(DemandType.ArbitraryFeedForward, leftDemand, rightDemand);
+					driveMessage.setNeutralMode(NeutralMode.Brake);
 
 					setDriveMessage(driveMessage);
 
