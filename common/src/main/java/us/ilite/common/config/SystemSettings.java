@@ -15,15 +15,16 @@ public class SystemSettings extends ConstantsBase {
     //=============================================================================
     // Logging
     // =============================================================================
-    public static String LOGGING_TIMESTAMP_KEY = "TIME";
+    public static String kLoggingTimestampKey = "TIME";
 
     // =============================================================================
     // Talon Addresses
     // =============================================================================
-    public static  int kDriveLeftMasterTalonId = 3;
-    public static  int kDriveLeftRearTalonId = 1;
-    public static  int kDriveRightMasterTalonId = 4; // Temporarily switch Master and Rear IDs
-    public static  int kDriveRightRearTalonId = 2;
+    // Encoders are on the rear Talons, so ID's are temporarily flipped around
+    public static  int kDriveLeftMasterTalonId = 1;
+    public static  int kDriveLeftRearTalonId = 3;
+    public static  int kDriveRightMasterTalonId = 2;
+    public static  int kDriveRightRearTalonId = 4;
 
     public static int kPigeonId = 3;
 
@@ -83,6 +84,9 @@ public class SystemSettings extends ConstantsBase {
     public static double kDriveVelocity_kP = 0.0;
     public static double kDriveVelocity_kI = 0.0;
     public static double kDriveVelocity_kD = 0.0;
+//    public static double kDriveVelocity_kP = 0.9;
+//    public static double kDriveVelocity_kI = 0.0;
+//    public static double kDriveVelocity_kD = 10.0;
     public static double kDriveVelocity_kF = 0.0; // We don't care about this feedforward because we inject our own with ArbitraryFeedforward
 
     @Override

@@ -71,10 +71,10 @@ public class Drive extends Loop {
 		mData.drive.set(EDriveData.RIGHT_POS_INCHES, mDriveHardware.getRightInches());
 		mData.drive.set(EDriveData.LEFT_VEL_IPS, mDriveHardware.getLeftVelInches());
 		mData.drive.set(EDriveData.RIGHT_VEL_IPS, mDriveHardware.getRightVelInches());
-		mData.drive.set(EDriveData.LEFT_CURRENT, mDriveHardware.getLeftCurrent());
-		mData.drive.set(EDriveData.RIGHT_CURRENT, mDriveHardware.getRightCurrent());
-		mData.drive.set(EDriveData.LEFT_VOLTAGE, mDriveHardware.getLeftVoltage());
-		mData.drive.set(EDriveData.RIGHT_VOLTAGE, mDriveHardware.getRightVoltage());
+//		mData.drive.set(EDriveData.LEFT_CURRENT, mDriveHardware.getLeftCurrent());
+//		mData.drive.set(EDriveData.RIGHT_CURRENT, mDriveHardware.getRightCurrent());
+//		mData.drive.set(EDriveData.LEFT_VOLTAGE, mDriveHardware.getLeftVoltage());
+//		mData.drive.set(EDriveData.RIGHT_VOLTAGE, mDriveHardware.getRightVoltage());
 		
 		mData.drive.set(EDriveData.LEFT_MESSAGE_OUTPUT, mDriveMessage.leftOutput);
 		mData.drive.set(EDriveData.RIGHT_MESSAGE_OUTPUT, mDriveMessage.rightOutput);
@@ -88,11 +88,12 @@ public class Drive extends Loop {
 		mData.drive.set(EDriveData.RIGHT_MESSAGE_DEMAND, mDriveMessage.rightDemand);
 
 		mData.imu.set(EGyro.YAW_DEGREES, mDriveHardware.getHeading().getDegrees());
+
+//		SimpleNetworkTable.writeCodexToSmartDashboard(EDriveData.class, mData.drive, mClock.getCurrentTime());
 	}
 
 	@Override
 	public void update(double pNow) {
-        SimpleNetworkTable.writeCodexToSmartDashboard(EDriveData.class, mData.drive, mClock.getCurrentTime());
         if(mDriveState != EDriveState.NORMAL) {
 			mLogger.error("Invalid drive state - maybe you meant to run this a high frequency?");
 		} else {
@@ -109,7 +110,6 @@ public class Drive extends Loop {
 
 	@Override
 	public void loop(double pNow) {
-		SimpleNetworkTable.writeCodexToSmartDashboard(EDriveData.class, mData.drive, mClock.getCurrentTime());
 		switch(mDriveState) {
 			case PATH_FOLLOWING:
 				if(mDriveController.isDone()) {
