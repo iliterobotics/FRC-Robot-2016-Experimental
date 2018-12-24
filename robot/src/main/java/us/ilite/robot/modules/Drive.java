@@ -141,15 +141,7 @@ public class Drive extends Loop {
 
 					setDriveMessage(driveMessage);
 
-					debugOutput.t = pNow;
-					debugOutput.targetLeftVel = Conversions.rotationsToInches(output.left_velocity / (Math.PI * 2.0));
-					debugOutput.targetRightVel = Conversions.rotationsToInches(output.right_velocity / (Math.PI * 2.0));
-					debugOutput.leftVel = mData.drive.get(EDriveData.LEFT_VEL_IPS);
-					debugOutput.rightVel = mData.drive.get(EDriveData.RIGHT_VEL_IPS);
-					debugOutput.targetX = mDriveController.getDriveMotionPlanner().mSetpoint.state().getPose().translation_.x();
-					debugOutput.targetY = mDriveController.getDriveMotionPlanner().mSetpoint.state().getPose().translation_.y();
-					debugOutput.x = mDriveController.getRobotStateEstimator().getRobotState().getLatestFieldToVehicle().getValue().translation_.x();
-					debugOutput.y = mDriveController.getRobotStateEstimator().getRobotState().getLatestFieldToVehicle().getValue().translation_.y();
+					debugOutput.log(pNow, output);
 
 					mDebugLogger.add(debugOutput);
 //					mMotionPlanLogger.add(mDriveController.getDriveMotionPlanner());
@@ -197,12 +189,24 @@ public class Drive extends Loop {
 		return this;
 	}
 
-	public static class DebugOutput {
+	public class DebugOutput {
 		public double t;
 		public double targetLeftVel, targetRightVel;
 		public double leftVel, rightVel;
 		public double targetX, targetY;
 		public double x, y;
+		
+		public void log(double time, DriveOutput output) {
+			t = time;
+			targetLeftVel = Conversions.rotationsToInches(output.left_velocity / (Math.PI * 2.0));
+			targetRightVel = Conversions.rotationsToInches(output.right_velocity / (Math.PI * 2.0));
+			leftVel = mData.drive.get(EDriveData.LEFT_VEL_IPS);
+			rightVel = mData.drive.get(EDriveData.RIGHT_VEL_IPS);
+			targetX = mDriveController.getDriveMotionPlanner().mSetpoint.state().getPose().translation_.x();
+			targetY = mDriveController.getDriveMotionPlanner().mSetpoint.state().getPose().translation_.y();
+			x = mDriveController.getRobotStateEstimator().getRobotState().getLatestFieldToVehicle().getValue().translation_.x();
+			y = mDriveController.getRobotStateEstimator().getRobotState().getLatestFieldToVehicle().getValue().translation_.y();
+		}
 	}
 
 }
