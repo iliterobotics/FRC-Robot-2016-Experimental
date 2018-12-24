@@ -149,11 +149,8 @@ public class Drive extends Loop {
 //					mMotionPlanLogger.add(mDriveController.getDriveMotionPlanner());
 				}
 				break;
-			case NORMAL:
-			default:
-				mDriveHardware.set(mDriveMessage);
-				break;
 		}
+		mDriveHardware.set(mDriveMessage);
 	}
 
 	public void followPath(Trajectory<TimedState<Pose2dWithCurvature>> pPath, boolean pResetPoseToStart) {
